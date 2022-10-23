@@ -1,7 +1,7 @@
 
  const { DB_URL, DB_SSL, DB_CLIENT, DB_LOG } = process.env
  const { Sequelize } = require('sequelize')
- const { relation } = require('./db_relation.js')
+ const { relation } = require('./db_relation')
  const _DB_SSL = DB_SSL == '1' ? true : false
  
  const sq = new Sequelize(DB_URL, {

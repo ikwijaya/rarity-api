@@ -2,7 +2,8 @@ const cors = require('cors')
 const express = require('express')
 const compression = require('compression')
 const app = express()
-const ro = require('./routes')
+const ro = require('../routes')
+const path = require('path')
 const { PORT } = process.env
 
 app.use(cors())
@@ -18,8 +19,13 @@ app.use((err, req, res, next) => {
     if (err instanceof SyntaxError) { res.status(400).send('err : '+ err) } else { next() }
 })
 
+app.use(express.static(__dirname))
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/template/index.html'))
+})
+
 // authenticate
-const sequelize = require('./db')
+const sequelize = require('../db')
 const authenticate = async () => {
     try {
         await sequelize.authenticate();

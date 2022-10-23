@@ -1,3 +1,8 @@
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
+const config = require('../../webpack.dev.config')
+
 const cors = require('cors')
 const express = require('express')
 const compression = require('compression')
@@ -5,6 +10,22 @@ const app = express()
 const ro = require('../routes')
 const path = require('path')
 const { PORT } = process.env
+const compiler = webpack(config)
+
+app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath
+  }))
+  
+app.use(webpackHotMiddleware(compiler))
+app.get('*', (req, res, next) => {
+    compiler.outputFileSystem.readFile(HTML_FILE, (err, result) => {
+        if (err) return next(err)
+        
+        res.set('content-type', 'text/html')
+        res.send(result)
+        res.end()
+    })
+})
 
 app.use(cors())
 app.use(compression({ filter: shouldCompress }))
@@ -17,11 +38,6 @@ app.use((req, res, next) => {
 })
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError) { res.status(400).send('err : '+ err) } else { next() }
-})
-
-app.use(express.static(__dirname))
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname + '/template/index.html'))
 })
 
 // authenticate

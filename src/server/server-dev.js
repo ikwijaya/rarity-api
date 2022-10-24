@@ -13,6 +13,7 @@ const { PORT } = process.env
 const compiler = webpack(config)
 
 app.use(webpackDevMiddleware(compiler, {
+    noInfo: true,
     publicPath: config.output.publicPath
   }))
   

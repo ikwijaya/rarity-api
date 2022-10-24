@@ -1,8 +1,10 @@
-const path = require("path")
-const HtmlWebPackPlugin = require("html-webpack-plugin")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");module.exports = {
+const path = require('path')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+
+module.exports = {
   entry: {
     main: './src/index.js'
   },
@@ -12,7 +14,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");mo
     filename: '[name].js'
   },
   target: 'web',
-  devtool: 'source-map',
+  devtool: '#source-map',
   // Webpack 4 does not have a CSS minifier, although
   // Webpack 5 will likely come with one
   optimization: {
@@ -32,7 +34,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");mo
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         }
       },
       {
@@ -41,7 +43,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");mo
         test: /\.html$/,
         use: [
           {
-            loader: "html-loader",
+            loader: 'html-loader',
             options: { minimize: true }
           }
         ]
@@ -49,7 +51,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");mo
       {
         // Loads images into CSS and Javascript files
         test: /\.jpg$/,
-        use: [{loader: "url-loader"}]
+        use: [{loader: 'url-loader'}]
       },
       {
         // Loads CSS into a file when you import it via Javascript
@@ -61,12 +63,12 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");mo
   },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./src/template/index.html",
-      filename: "./index.html"
+      template: './src/template/index.html',
+      filename: './index.html'
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: '[name].css',
+      chunkFilename: '[id].css'
     })
   ]
 }
